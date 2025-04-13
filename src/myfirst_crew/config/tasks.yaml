@@ -1,0 +1,49 @@
+intake_task:
+  description: >
+    Collect these from user: {height}, {weight}, {age}, {gender}, {health_goals}, {problem_areas}, {meal_type}, {mental_health_inputs}.
+    Also ask user to upload or provide path to {front_image_path} and {back_image_path}.
+  expected_output: >
+    A structured user profile in JSON format with all values filled in from the above fields.
+  agent: intake_agent
+
+body_analysis_task:
+  description: >
+    Use {height}, {weight}, {front_image_path}, and {back_image_path} to estimate body fat %, posture, and body type.
+  expected_output: >
+    {
+      "body_fat_percentage": "...",
+      "BMI": "...",
+      "posture": "...",
+      "body_type": "..."
+    }
+  agent: body_analyzer
+
+therapist_task:
+  description: >
+    Analyze {mental_health_inputs} and {health_goals}. Recommend 3–5 calming or motivational activities suited to user lifestyle.
+  expected_output: >
+    A daily or weekly plan of mental health practices like meditation, journaling, or breathing routines.
+  agent: therapist
+
+trainer_task:
+  description: >
+    Design a 5-day workout based on body analysis results and focus areas: {problem_areas}.
+  expected_output: >
+    5-day schedule with warm-up, main set, and cooldown. Include explanation of each exercise and its benefits.
+  agent: personal_trainer
+
+nutritionist_task:
+  description: >
+    Create a balanced Indian meal plan aligned with user's metrics and goals. Use {meal_type}, body_fat_percentage, and fitness level.
+  expected_output: >
+    Daily meal plan with macros (approx), Indian recipe options, and meal timing suggestions.
+  agent: nutritionist
+  context:
+    - body_analysis_task
+
+marketing_task:
+  description: >
+    Combine all outputs into a markdown-formatted report: user profile, body stats, mental health suggestions, workouts, and diet plan.
+  expected_output: >
+    A full wellness plan formatted in sections: Profile, Analysis, Fitness Plan, Mental Wellness, and Nutrition.
+  agent: marketing_expert
